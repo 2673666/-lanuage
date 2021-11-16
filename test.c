@@ -1,56 +1,64 @@
-#define _CRT_SECURE_NO_WARNINGS 1
+#define _CRT_SECURE_NO_WARNINGS 
 
-#include"game.h"
+#include"contact.h"  // 引用自己创建的头文件使用的是双引号“” 
+
 void menu()
 {
-	printf("*******************\n");
-	printf("*****  1.play   ***\n");
-	printf("*****  0.exit   ***\n");
-	printf("*******************\n");
-}
-
-void game()
-{
-	char mine[ROWS][COLS] = {0};//存放雷的信息(布置雷)
-	char show[ROWS][COLS] = {0};//存放周围有多少雷 的信息
-	//初始化界面
-	InitBoard(mine, ROWS, COLS,'0'); 
-	InitBoard(show, ROWS, COLS,'*');
-
-	//输出显示界面
-	DisplayBoard(show,ROW,COL);
+	printf("***************************\n");
+	printf("***** 1.add    2.del  *****\n");
+	printf("***** 3.modify 4.ser  *****\n");
+	printf("***** 5.sort   6.pri  *****\n");
+	printf("*****      0.exit     *****\n");
+	printf("***************************\n");
+	printf("请选择：->");
 	
-	//布置雷
-
-	setmine(mine, ROW, COL);
-	//DisplayBoard(mine,ROW,COL);
-
-	//扫雷
-	finemine(mine,show, ROW, COL);
 }
+//枚举常量
+enum option
+{
+	EXIT,
+	ADD,
+	DEL,
+	MODIFY,
+	SER,
+	SORT,
+	PRI
+};//各个常量之间用逗号隔开
 
 int main()
 {
-	srand((unsigned int)time(NULL));
+	Contact con;//创建一个通讯录
 	int input = 0;
+	InitContact(&con);
 	do
-	{ 
-		menu();
-		printf("请选择：>\n");
+	{
+		menu();	
 		scanf("%d", &input);
-		switch(input)
+		switch (input)
 		{
-			case 1:
-				game();//扫雷游戏
-				break;
-			case 0:
-				printf("退出游戏\n");
-				break;
-			default:
-				printf("输入错误，请重新输入\n");
-				break;
+		case ADD:
+			Addpeoinfo(&con);
+			break;
+		case DEL:
+			Delpeoinfo(&con);
+			break;
+		case MODIFY:
+			Modpeoinfo(&con);
+			break;
+		case SER:
+			Serpeoinfo(&con);
+			break;
+		case SORT:
+			break;
+		case PRI:
+			Pricontact(&con);
+			break;
+		case EXIT:
+			DestoryContact(&con);
+			break;
+		default:
+			printf("选择错误，请重新选择\n");
 		}
-
 	} while (input);
 	return 0;
 }
